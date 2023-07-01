@@ -27,7 +27,14 @@ export default createGlobalStyle`${css`
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 
-    background-color: ${({ theme }) => theme.colors.blue};
+    background: url("https://i.postimg.cc/2yKHtJKH/stone.jpg") center center;
+  }
+
+  main#container {
+    display: grid;
+    grid-template-colunms: repeat(3, 1fr);
+    
+    height: 100%;
   }
 
   button {
