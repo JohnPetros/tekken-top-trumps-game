@@ -30,13 +30,6 @@ export default createGlobalStyle`${css`
     background: url("https://i.postimg.cc/2yKHtJKH/stone.jpg") center center;
   }
 
-  main#container {
-    display: grid;
-    grid-template-colunms: repeat(3, 1fr);
-    
-    height: 100%;
-  }
-
   button {
     border: none;
     cursor: pointer;
