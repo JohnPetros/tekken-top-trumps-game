@@ -1,4 +1,4 @@
-import { Container, Background, Character, Attributes } from "./styles";
+import { Container, Background, Fighter, Attributes } from "./styles";
 
 interface Player {
   isBot?: boolean;
@@ -8,7 +8,7 @@ export function Player({ isBot = false }: Player) {
   return (
     <Container isBot={isBot}>
       <Background />
-      <Character isBot={isBot}>
+      <Fighter isBot={isBot}>
         <Attributes>
           <dl>
             <dt>Force</dt>
@@ -32,7 +32,7 @@ export function Player({ isBot = false }: Player) {
           </dl>
         </Attributes>
         <strong>Paul</strong>
-      </Character>
+      </Fighter>
     </Container>
   );
 }

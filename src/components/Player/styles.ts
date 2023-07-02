@@ -29,7 +29,7 @@ export const Background = styled.div`
   opacity: 0.5;
 `;
 
-export const Character = styled.div<Player>`
+export const Fighter = styled.div<Player>`
   width: 100%;
   padding: ${({ isBot }) => (isBot ? "0 0 0 7.2rem" : "0 7.2rem 0 0")};
 
@@ -37,7 +37,6 @@ export const Character = styled.div<Player>`
   left: ${({ isBot }) => (isBot ? 0 : 0)}rem;
   order: ${({ isBot }) => (isBot ? 1 : 2)};
   z-index: 5;
-  /* background: red; */
 
   &::before {
     content: "";
@@ -83,6 +82,8 @@ export const Attributes = styled.div`
   padding: 2.4rem;
   border-radius: 8px;
   opacity: 0.9;
+
+  transform: skew(-15deg);
 
   color: ${({ theme }) => theme.colors.white};
 

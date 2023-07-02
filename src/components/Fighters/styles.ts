@@ -7,15 +7,15 @@ export const Container = styled.div`
   grid-template-columns: repeat(4, 1fr);
 `;
 
-interface Character {
+interface Fighter {
   image: string;
 }
 
-export const Character = styled.div<Character>`
+export const Fighter = styled.div<Fighter>`
   height: 12rem;
   border: 1px solid ${({ theme }) => theme.colors.white};
   border-radius: 8px;
-  background-color: ${({ theme }) => theme.colors.blue_700};  
+  background-color: ${({ theme }) => theme.colors.blue_700};
   background-size: 300%;
   background-position: 75% top;
   background-image: ${({ image }) => `url(${image})`};
@@ -26,7 +26,4 @@ export const Character = styled.div<Character>`
     background: transparent;
     /* cursor: not-allowed; */
   }
-  /* img {
-    width: 150%;
-  } */
 `;

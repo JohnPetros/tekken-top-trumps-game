@@ -1,5 +1,5 @@
 import { Player } from "../Player";
-import { Characters } from "../Characters";
+import { Characters } from "../Fighters";
 import { Container } from "./styles";
 
 export function Game() {
