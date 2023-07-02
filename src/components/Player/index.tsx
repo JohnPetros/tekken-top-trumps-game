@@ -6,9 +6,10 @@ import {
   Fighter,
   Attributes,
   Attribute,
-  Check,
+  Checkbox,
   Stat,
   Placeholder,
+  Check,
 } from "./styles";
 import theme from "../../styles/theme";
 
@@ -95,10 +96,19 @@ export function Player({ fighter, isBot = false }: PlayerProps) {
                             : "inherit",
                       }}
                     >
-                      <Check
+                      <Checkbox
                         isChecked={selectedAttribute === name}
                         isBot={isBot}
-                      />
+                      >
+                        {selectedAttribute === name && (
+                          <Check
+                            animate={{ rotate: [-90, 0] }}
+                            transition={{ ease: "linear", duration: 0.2 }}
+                          >
+                            ✔
+                          </Check>
+                        )}
+                      </Checkbox>
                       {name}
                     </dt>
                     <dd>

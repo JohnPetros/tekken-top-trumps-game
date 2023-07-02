@@ -128,12 +128,12 @@ export const Attribute = styled.button<Attribute>`
   }
 `;
 
-interface Check {
+interface Checkbox {
   isChecked: boolean;
   isBot: boolean;
 }
 
-export const Check = styled.span<Check>`
+export const Checkbox = styled.span<Checkbox>`
   width: 1.6rem;
   height: 1.6rem;
   border-radius: 50%;
@@ -148,7 +148,12 @@ export const Check = styled.span<Check>`
   display: grid;
   place-content: center;
 
-  ${({ isChecked }) =>
+  span {
+    font-size: 1.2rem;
+    color: ${({ theme }) => theme.colors.white};
+  }
+
+  /* ${({ isChecked }) =>
     isChecked &&
     css`
       &::before {
@@ -157,7 +162,13 @@ export const Check = styled.span<Check>`
         font-size: 1.2rem;
         color: ${({ theme }) => theme.colors.white};
       }
-    `}
+    `} */
+`;
+
+export const Check = styled(motion.span)`
+  display: block;
+  font-size: 1.2rem;
+  color: ${({ theme }) => theme.colors.white};
 `;
 
 interface Stat {
