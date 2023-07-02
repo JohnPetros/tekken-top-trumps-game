@@ -7,11 +7,11 @@ import {
   Attributes,
   Attribute,
   Stat,
+  Placeholder,
 } from "./styles";
 
 interface PlayerProps {
   fighter: FighterData | null;
-  hasFighter?: boolean;
   isBot?: boolean;
 }
 
@@ -25,17 +25,13 @@ interface AattributesStats {
   stats: Stat[];
 }
 
-export function Player({ fighter, hasFighter, isBot = false }: PlayerProps) {
+export function Player({ fighter, isBot = false }: PlayerProps) {
   const {
     state: { selectedAttribute },
   } = useGame();
   const [attributesStats, setAttributesStats] = useState<AattributesStats[]>(
     []
   );
-
-  function verifyAttributeValue(value: number, maxValue: number) {
-    return value + 1 < maxValue / 10;
-  }
 
   function getAttributesStats(attribute: [string, number]) {
     const [attributeName, attributeValue] = attribute;
@@ -67,7 +63,7 @@ export function Player({ fighter, hasFighter, isBot = false }: PlayerProps) {
         transition={{ duration: 0.4 }}
         isBot={isBot}
       />
-      {fighter && (
+      {fighter ? (
         <Fighter
           key={fighter.id}
           isBot={isBot}
@@ -101,6 +97,8 @@ export function Player({ fighter, hasFighter, isBot = false }: PlayerProps) {
             <strong>{fighter.name}</strong>
           </>
         </Fighter>
+      ) : (
+        <Placeholder isBot={isBot} />
       )}
     </Container>
   );

@@ -13,10 +13,7 @@ export function Game() {
 
   return (
     <Container>
-      <Player
-        fighter={previewFighter ?? playerOne.fighter}
-        hasFighter={!!playerOne.fighter}
-      />
+      <Player fighter={previewFighter ?? playerOne.fighter} />
 
       <div className="middle">
         <Scoreboard />
@@ -26,11 +23,7 @@ export function Game() {
         <Button title="Next round" index={3} />
       </div>
 
-      <Player
-        fighter={playerTwo.fighter}
-        hasFighter={!!playerTwo.fighter}
-        isBot={true}
-      />
+      <Player fighter={playerTwo.fighter} isBot={true} />
     </Container>
   );
 }

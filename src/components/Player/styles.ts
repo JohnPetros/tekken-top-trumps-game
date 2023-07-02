@@ -46,7 +46,6 @@ export const Fighter = styled(motion.div)<Player & Fighter>`
   padding: ${({ isBot }) => (isBot ? "0 0 0 8rem" : "0 8rem 0 0")};
 
   position: absolute;
-  left: ${({ isBot }) => (isBot ? 0 : 0)}rem;
   order: ${({ isBot }) => (isBot ? 1 : 2)};
   z-index: 5;
 
@@ -146,4 +145,29 @@ export const Stat = styled.span<Stat>`
     }
   }};
   transform: skew(2deg, -2deg);
+`;
+
+interface Placeholder {
+  isBot: boolean;
+}
+
+export const Placeholder = styled.div<Placeholder>`
+  position: absolute;
+  top: 50%;
+  ${({ isBot }) => (isBot ? "right" : "left")}: 40%;
+
+  height: 12rem !important;
+  width: 12rem;
+  border-radius: 50%;
+
+  display: grid;
+  place-content: center;
+
+  &:before {
+    content: "?";
+    font-size: 4rem;
+    color: ${({ theme }) => theme.colors.white};
+  }
+
+  background: rgba(1, 1, 1, 0.5);
 `;
