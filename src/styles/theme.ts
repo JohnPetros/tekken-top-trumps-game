@@ -6,8 +6,6 @@ export default {
     red: "#C10108",
     gray: "#999285",
     white: "#F9F9F9",
-
-    gradient: "linear-gradient(90deg, #9b28a1, #D638DD)",
   },
 
   fonts: {

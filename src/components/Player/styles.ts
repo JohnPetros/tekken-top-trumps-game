@@ -16,7 +16,7 @@ export const Container = styled.div<Player>`
 
   > div:first-child {
     order: ${({ isBot }) => (isBot ? 2 : 1)};
-    transform: ${({ isBot }) => (isBot ? "scaleX(1)" : "scaleX(-1)")};
+    transform: ${({ isBot }) => (isBot ? "scaleX(-1)" : "scaleX(1)")};
   }
 `;
 
@@ -24,14 +24,14 @@ export const Background = styled.div`
   width: 24rem;
   border-radius: 8px 8px 0 0;
 
-  background: ${({ theme }) => theme.colors.gradient};
+  background: linear-gradient(90deg, #9b28a1, #d638dd, transparent 95%);
   z-index: 1;
   opacity: 0.5;
 `;
 
 export const Fighter = styled.div<Player>`
   width: 100%;
-  padding: ${({ isBot }) => (isBot ? "0 0 0 7.2rem" : "0 7.2rem 0 0")};
+  padding: ${({ isBot }) => (isBot ? "0 0 0 8rem" : "0 8rem 0 0")};
 
   position: absolute;
   left: ${({ isBot }) => (isBot ? 0 : 0)}rem;
@@ -99,7 +99,7 @@ export const Attributes = styled.div`
     display: inline-block;
     width: 1.2rem;
     height: 1.2rem;
-    background: ${({ theme }) => theme.colors.gradient};
+    background: linear-gradient(90deg, #9b28a1, #d638dd);
     transform: skew(5deg, -5deg);
   }
 
