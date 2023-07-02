@@ -1,5 +1,5 @@
 import { Game } from "./components/Game";
-import { GameProvider } from "./components/hooks/useGame";
+import { GameProvider } from "./hooks/useGame";
 
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "./styles/global";

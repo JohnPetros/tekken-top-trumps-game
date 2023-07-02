@@ -16,16 +16,24 @@ export const Container = styled.div<Player>`
   }
 
   > div:first-child {
-    order: ${({ isBot }) => (isBot ? 2 : 1)};
-    transform: ${({ isBot }) => (isBot ? "scaleX(-1)" : "scaleX(1)")};
   }
 `;
 
-export const Background = styled(motion.div)`
+interface Background {
+  isBot: boolean;
+}
+
+export const Background = styled(motion.div)<Background>`
   width: 24rem;
   border-radius: 8px 8px 0 0;
 
-  background: linear-gradient(90deg, #9b28a1, #d638dd, transparent 95%);
+  order: ${({ isBot }) => (isBot ? 2 : 1)};
+  transform: ${({ isBot }) => (isBot ? "scaleX(-1)" : "scaleX(1)")};
+
+  background: ${({ isBot, theme }) => {
+    const color = theme.colors[isBot ? "red" : "blue_300"];
+    return `linear-gradient(90deg, ${color}, transparent 95%)`;
+  }};
   z-index: 1;
 `;
 
@@ -84,8 +92,6 @@ export const Attributes = styled.div`
 
   transform: skew(-15deg);
 
-  color: ${({ theme }) => theme.colors.white};
-
   dl {
     width: 100%;
     display: grid;
@@ -104,15 +110,40 @@ export const Attributes = styled.div`
   }
 `;
 
+interface Attribute {
+  isBot: boolean;
+}
+
+export const Attribute = styled.button<Attribute>`
+  font-size: 1.6rem;
+  color: ${({ theme }) => theme.colors.white};
+  text-align: start;
+  background: transparent;
+  text-transform: capitalize;
+
+  &:hover {
+    color: ${({ isBot, theme }) => theme.colors[isBot ? "red" : "blue_300"]};
+  }
+`;
+
 interface Stat {
   isFilled: boolean;
+  isBot: boolean;
+  isSelected: boolean;
 }
 
 export const Stat = styled.span<Stat>`
   display: inline-block;
   width: 1.2rem;
   height: 1.2rem;
-  background: ${({ isFilled, theme }) =>
-    isFilled ? "linear-gradient(90deg, #9b28a1, #d638dd)" : theme.colors.gray};
+  background: ${({ isFilled, isSelected, isBot, theme }) => {
+    if (isFilled) {
+      return isSelected
+        ? theme.colors[isBot ? "red" : "blue_300"]
+        : "linear-gradient(90deg, #9b28a1, #d638dd)";
+    } else {
+      return theme.colors.gray;
+    }
+  }};
   transform: skew(2deg, -2deg);
 `;

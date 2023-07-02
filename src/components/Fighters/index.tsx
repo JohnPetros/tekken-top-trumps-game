@@ -1,14 +1,33 @@
-import { useGame } from "../hooks/useGame";
-import { fighters } from "../../utils/fighters";
+import { Fighter as FighterData, useGame } from "../../hooks/useGame";
+import { Variants } from "framer-motion";
+
 import { Container, Fighter } from "./styles";
 import theme from "../../styles/theme";
-import { Variants } from "framer-motion";
+import { fighters } from "../../utils/fighters";
 
 export function Fighters() {
   const {
     state: { playerOne, playerTwo },
     dispatch,
   } = useGame();
+
+  function getFighter(id: number) {
+    return fighters.find((fighter) => fighter.id === id)!;
+  }
+
+  function handleFigtherMouseOver(id: number) {
+    const fighter: FighterData = getFighter(id);
+    dispatch({ type: "setPreviewFighter", payload: fighter });
+  }
+
+  function handleFigtherMouseLeave() {
+    dispatch({ type: "setPreviewFighter", payload: null });
+  }
+
+  function handleFighterClick(id: number) {
+    const fighter: FighterData = getFighter(id);
+    dispatch({ type: "setPlayerOneFighter", payload: fighter });
+  }
 
   return (
     <Container>
@@ -25,7 +44,6 @@ export function Fighters() {
         const shadowAnimation: Variants = {
           active: {
             boxShadow: [
-              `0`,
               `0px 0px 12px 4px ${color}`,
               `0px 0px 12px 8px ${color}`,
             ],
@@ -35,6 +53,9 @@ export function Fighters() {
               repeatType: "mirror",
             },
           },
+          desactive: {
+            boxShadow: `0`,
+          },
         };
 
         return (
@@ -42,8 +63,10 @@ export function Fighters() {
             key={id}
             image={`https://i.postimg.cc/${image}`}
             variants={shadowAnimation}
-            animate={isPlayer && "active"}
-            whileHover={"active"}
+            animate={isPlayer ? "active" : "desactive"}
+            onMouseOver={() => handleFigtherMouseOver(id)}
+            onMouseLeave={handleFigtherMouseLeave}
+            onClick={() => handleFighterClick(id)}
           >
             {isPlayer && <span>{isPlayerOne ? "1P" : "2P"}</span>}
             <button />

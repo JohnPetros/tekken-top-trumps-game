@@ -1,5 +1,4 @@
 import { ReactNode, createContext, useContext, useReducer } from "react";
-import { fighters } from "../../utils/fighters";
 
 export interface Fighter {
   id: number;
@@ -18,8 +17,9 @@ export interface Player {
 }
 
 type GameAction =
-  | { type: "setSelectedFighterOne"; fighter: Fighter }
-  | { type: "setSelectedFighterTwo"; fighter: Fighter };
+  | { type: "setPlayerOneFighter"; payload: Fighter }
+  | { type: "setPlayerTwoFighter"; payload: Fighter }
+  | { type: "setPreviewFighter"; payload: Fighter | null };
 
 interface GameProviderProps {
   children: ReactNode;
@@ -28,11 +28,15 @@ interface GameProviderProps {
 interface GameState {
   playerOne: Player;
   playerTwo: Player;
+  previewFighter: Fighter | null;
+  selectedAttribute: string | null;
 }
 
 const initialState: GameState = {
-  playerOne: { score: 0, fighter: fighters[1] },
-  playerTwo: { score: 0, fighter: fighters[5] },
+  playerOne: { score: 0, fighter: null },
+  playerTwo: { score: 0, fighter: null },
+  previewFighter: null,
+  selectedAttribute: '',
 };
 
 interface Context {
@@ -44,9 +48,21 @@ const GameContext = createContext({} as Context);
 
 function GameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
-    case "setSelectedFighterOne":
-      return { ...state, selectedFighterOne: action.fighter };
-    case "setSelectedFighterTwo":
+    case "setPlayerOneFighter":
+      return {
+        ...state,
+        playerOne: { ...state.playerOne, fighter: action.payload },
+      };
+    case "setPlayerTwoFighter":
+      return {
+        ...state,
+        playerOne: { ...state.playerTwo, fighter: action.payload },
+      };
+    case "setPreviewFighter":
+      return {
+        ...state,
+        previewFighter: action.payload,
+      };
     default:
       return state;
   }
