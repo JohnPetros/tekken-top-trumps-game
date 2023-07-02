@@ -1,9 +1,9 @@
 import { Player } from "../Player";
 import { useGame, Fighter } from "../../hooks/useGame";
 import { Fighters } from "../Fighters";
-// import { Scoreboard } from "../Scoreboard";
+import { Scoreboard } from "../Scoreboard";
 import { Button } from "../Button";
-import { Container, Scoreboard } from "./styles";
+import { Container } from "./styles";
 
 export function Game() {
   const {
@@ -19,10 +19,7 @@ export function Game() {
       />
 
       <div className="middle">
-        <Scoreboard>
-          Player 1 <span>{playerOne.score}</span> VS{" "}
-          <span>{playerTwo.score}</span> Player 2
-        </Scoreboard>
+        <Scoreboard />
         <Fighters />
         <Button title="Sort fighter" index={1} />
         <Button title="Fight" index={2} />

@@ -17,22 +17,3 @@ export const Container = styled.main`
     justify-content: center;
   }
 `;
-
-export const Scoreboard = styled.div`
-  background-color: ${({ theme }) => theme.colors.blue_900};
-  color: ${({ theme }) => theme.colors.white};
-
-  margin-bottom: 2.4rem;
-  padding: 1.2rem;
-  border-radius: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.white};
-
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  span {
-    font-size: 2.4rem;
-    color: ${({ theme }) => theme.colors.purple};
-  }
-`;
