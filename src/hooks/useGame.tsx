@@ -16,10 +16,16 @@ export interface Player {
   fighter: Fighter | null;
 }
 
+type Stage =
+  | "fighterOne-selection"
+  | "fighterTwo-selection"
+  | "attribute-selection";
+
 type GameAction =
   | { type: "setPlayerOneFighter"; payload: Fighter }
   | { type: "setPlayerTwoFighter"; payload: Fighter }
-  | { type: "setPreviewFighter"; payload: Fighter | null };
+  | { type: "setPreviewFighter"; payload: Fighter | null }
+  | { type: "setSelectedAttribute"; payload: string | null };
 
 interface GameProviderProps {
   children: ReactNode;
@@ -30,13 +36,15 @@ interface GameState {
   playerTwo: Player;
   previewFighter: Fighter | null;
   selectedAttribute: string | null;
+  stage: Stage;
 }
 
 const initialState: GameState = {
   playerOne: { score: 0, fighter: null },
   playerTwo: { score: 0, fighter: null },
   previewFighter: null,
-  selectedAttribute: '',
+  selectedAttribute: "",
+  stage: "fighterOne-selection",
 };
 
 interface Context {
@@ -51,6 +59,7 @@ function GameReducer(state: GameState, action: GameAction) {
     case "setPlayerOneFighter":
       return {
         ...state,
+        stage: "attribute-selection",
         playerOne: { ...state.playerOne, fighter: action.payload },
       };
     case "setPlayerTwoFighter":
@@ -62,6 +71,11 @@ function GameReducer(state: GameState, action: GameAction) {
       return {
         ...state,
         previewFighter: action.payload,
+      };
+    case "setSelectedAttribute":
+      return {
+        ...state,
+        selectedAttribute: action.payload,
       };
     default:
       return state;

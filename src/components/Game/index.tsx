@@ -1,5 +1,6 @@
+import { useState, useEffect } from "react";
 import { Player } from "../Player";
-import { useGame, Fighter } from "../../hooks/useGame";
+import { useGame } from "../../hooks/useGame";
 import { Fighters } from "../Fighters";
 import { Scoreboard } from "../Scoreboard";
 import { Button } from "../Button";
@@ -7,20 +8,33 @@ import { Container } from "./styles";
 
 export function Game() {
   const {
-    state: { playerOne, playerTwo, previewFighter },
+    state: { playerOne, playerTwo, previewFighter, stage },
     dispatch,
   } = useGame();
+  const [message, setMessage] = useState("Select your fighter");
+
+  function handleFighterTwoSelection() {}
+
+  useEffect(() => {
+    switch (stage) {
+      case "fighterOne-selection":
+        setMessage("Select your fighter");
+        break;
+      case "attribute-selection":
+        setMessage("Select one attribute of the fighter");
+        break;
+    }
+  }, [playerOne, playerTwo]);
 
   return (
     <Container>
       <Player fighter={previewFighter ?? playerOne.fighter} />
 
       <div className="middle">
+        <p>{message}</p>
         <Scoreboard />
         <Fighters />
-        <Button title="Sort fighter" index={1} />
-        <Button title="Fight" index={2} />
-        <Button title="Next round" index={3} />
+        <Button title="Fight" onClick={handleFighterTwoSelection} />
       </div>
 
       <Player fighter={playerTwo.fighter} isBot={true} />

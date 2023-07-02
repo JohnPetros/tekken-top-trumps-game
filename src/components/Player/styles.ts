@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { motion } from "framer-motion";
 
 interface Player {
@@ -98,6 +98,9 @@ export const Attributes = styled.div`
 
   dt {
     margin-top: 8px;
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
   }
 
   dd {
@@ -125,6 +128,38 @@ export const Attribute = styled.button<Attribute>`
   }
 `;
 
+interface Check {
+  isChecked: boolean;
+  isBot: boolean;
+}
+
+export const Check = styled.span<Check>`
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  background: ${({ isChecked, isBot, theme }) => {
+    const { blue_300, red, gray } = theme.colors;
+    if (isChecked) {
+      return isBot ? red : blue_300;
+    }
+    return gray;
+  }};
+
+  display: grid;
+  place-content: center;
+
+  ${({ isChecked }) =>
+    isChecked &&
+    css`
+      &::before {
+        content: "✔";
+        display: block;
+        font-size: 1.2rem;
+        color: ${({ theme }) => theme.colors.white};
+      }
+    `}
+`;
+
 interface Stat {
   isFilled: boolean;
   isBot: boolean;
@@ -144,6 +179,9 @@ export const Stat = styled.span<Stat>`
       return theme.colors.gray;
     }
   }};
+
+  pointer-events: ${({ isBot }) => (isBot ? "none" : "auto")};
+
   transform: skew(2deg, -2deg);
 `;
 

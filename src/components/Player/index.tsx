@@ -6,9 +6,11 @@ import {
   Fighter,
   Attributes,
   Attribute,
+  Check,
   Stat,
   Placeholder,
 } from "./styles";
+import theme from "../../styles/theme";
 
 interface PlayerProps {
   fighter: FighterData | null;
@@ -28,10 +30,15 @@ interface AattributesStats {
 export function Player({ fighter, isBot = false }: PlayerProps) {
   const {
     state: { selectedAttribute },
+    dispatch,
   } = useGame();
   const [attributesStats, setAttributesStats] = useState<AattributesStats[]>(
     []
   );
+
+  function handleAttributeClick(attribute: string) {
+    dispatch({ type: "setSelectedAttribute", payload: attribute });
+  }
 
   function getAttributesStats(attribute: [string, number]) {
     const [attributeName, attributeValue] = attribute;
@@ -76,8 +83,24 @@ export function Player({ fighter, isBot = false }: PlayerProps) {
             <Attributes>
               <dl>
                 {attributesStats.map(({ name, stats }) => (
-                  <Attribute isBot={isBot}>
-                    <dt>{name}</dt>
+                  <Attribute
+                    isBot={isBot}
+                    onClick={() => handleAttributeClick(name)}
+                  >
+                    <dt
+                      style={{
+                        color:
+                          selectedAttribute === name
+                            ? theme.colors.blue_300
+                            : "inherit",
+                      }}
+                    >
+                      <Check
+                        isChecked={selectedAttribute === name}
+                        isBot={isBot}
+                      />
+                      {name}
+                    </dt>
                     <dd>
                       {stats.map(({ id, isFilled }) => {
                         return (

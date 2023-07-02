@@ -1,6 +1,7 @@
 import { useGame } from "../../hooks/useGame";
 import { Container, Score } from "./styles";
 import theme from "../../styles/theme";
+const { blue_300, red } = theme.colors;
 
 export function Scoreboard() {
   const {
@@ -9,8 +10,8 @@ export function Scoreboard() {
 
   return (
     <Container>
-      Player 1 <Score color={theme.colors.blue_300}>8</Score> vs{" "}
-      <Score color={theme.colors.red}>8</Score> Player 2
+      Player 1 <Score color={blue_300}>{playerOne.score}</Score> vs{" "}
+      <Score color={red}>{playerTwo.score}</Score> Player 2
     </Container>
   );
 }
