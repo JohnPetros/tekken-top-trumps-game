@@ -4,7 +4,10 @@ export const Container = styled.div`
   width: 100%;
 
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+
+  margin-bottom: 2.4rem;
 `;
 
 interface Fighter {
@@ -12,7 +15,7 @@ interface Fighter {
 }
 
 export const Fighter = styled.div<Fighter>`
-  height: 12rem;
+  height: 8rem;
   border: 1px solid ${({ theme }) => theme.colors.white};
   border-radius: 8px;
   background-color: ${({ theme }) => theme.colors.blue_700};

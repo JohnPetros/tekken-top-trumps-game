@@ -68,11 +68,6 @@ export const Fighter = styled.div<Player>`
 
     margin-top: 2.4rem;
   }
-
-  strong,
-  > div {
-    /* transform: ${({ isBot }) => (isBot ? "scaleX(-1)" : "scaleX(1)")}; */
-  }
 `;
 
 export const Attributes = styled.div`
