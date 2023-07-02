@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 interface Player {
   isBot: boolean;
@@ -20,16 +21,19 @@ export const Container = styled.div<Player>`
   }
 `;
 
-export const Background = styled.div`
+export const Background = styled(motion.div)`
   width: 24rem;
   border-radius: 8px 8px 0 0;
 
   background: linear-gradient(90deg, #9b28a1, #d638dd, transparent 95%);
   z-index: 1;
-  opacity: 0.5;
 `;
 
-export const Fighter = styled.div<Player>`
+interface Fighter {
+  image: string;
+}
+
+export const Fighter = styled(motion.div)<Player & Fighter>`
   width: 100%;
   padding: ${({ isBot }) => (isBot ? "0 0 0 8rem" : "0 8rem 0 0")};
 
@@ -45,7 +49,7 @@ export const Fighter = styled.div<Player>`
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("https://i.postimg.cc/jjshZZkG/PAUL.png");
+    background-image: ${({ image }) => `url(${image})`};
     background-size: cover;
     background-repeat: no-repeat;
     background-position: -20rem center;
@@ -95,15 +99,20 @@ export const Attributes = styled.div`
     margin-top: 8px;
   }
 
-  span {
-    display: inline-block;
-    width: 1.2rem;
-    height: 1.2rem;
-    background: linear-gradient(90deg, #9b28a1, #d638dd);
-    transform: skew(5deg, -5deg);
-  }
-
   span + span {
     margin-left: 6px;
   }
+`;
+
+interface Stat {
+  isFilled: boolean;
+}
+
+export const Stat = styled.span<Stat>`
+  display: inline-block;
+  width: 1.2rem;
+  height: 1.2rem;
+  background: ${({ isFilled, theme }) =>
+    isFilled ? "linear-gradient(90deg, #9b28a1, #d638dd)" : theme.colors.gray};
+  transform: skew(2deg, -2deg);
 `;
