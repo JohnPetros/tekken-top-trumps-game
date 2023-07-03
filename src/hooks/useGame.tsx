@@ -1,13 +1,17 @@
 import { ReactNode, createContext, useContext, useReducer } from "react";
 
+interface Attributes {
+  force: number;
+  defense: number;
+  mobility: number;
+}
+
 export interface Fighter {
   id: number;
   name: string;
   image: string;
-  attributes: {
-    [force: string]: number;
-    [defense: string]: number;
-    [mobility: string]: number;
+  attributes: Attributes & {
+    [attributeName: string]: number;
   };
 }
 
@@ -30,7 +34,8 @@ type GameAction =
   | { type: "setPlayerTwoFighter"; payload: Fighter }
   | { type: "setPreviewFighter"; payload: Fighter | null }
   | { type: "setSelectedAttribute"; payload: string | null }
-  | { type: "setWinner"; payload: Winner };
+  | { type: "setWinner"; payload: Winner }
+  | { type: "setStage"; payload: Stage };
 
 interface GameProviderProps {
   children: ReactNode;
@@ -81,11 +86,11 @@ function GameReducer(state: GameState, action: GameAction) {
     case "setSelectedAttribute":
       return {
         ...state,
-        stage: "fighterTwo-selection",
         selectedAttribute: action.payload,
       };
     case "setWinner":
       let { playerOne, playerTwo } = state;
+
       if (action.payload === "playerOne") {
         playerOne.isWinner = true;
         playerOne.score = playerOne.score++;
@@ -97,11 +102,18 @@ function GameReducer(state: GameState, action: GameAction) {
 
         playerOne.isWinner = false;
       }
+      console.log(playerOne.score, playerTwo.score);
+      
       return {
         ...state,
         playerOne,
         playerTwo,
         stage: "round-result",
+      };
+    case "setStage":
+      return {
+        ...state,
+        stage: action.payload,
       };
     default:
       return state;

@@ -7,15 +7,19 @@ import { fighters } from "../../utils/fighters";
 
 export function Fighters() {
   const {
-    state: { playerOne, playerTwo },
+    state: { playerOne, playerTwo, stage },
     dispatch,
   } = useGame();
+  const hasEvents =
+    stage !== "fighterTwo-selection" && stage !== "round-result";
 
   function getFighter(id: number) {
     return fighters.find((fighter) => fighter.id === id)!;
   }
 
   function handleFigtherMouseOver(id: number) {
+    if (!hasEvents) return;
+
     const fighter: FighterData = getFighter(id);
     dispatch({ type: "setPreviewFighter", payload: fighter });
   }
@@ -67,6 +71,7 @@ export function Fighters() {
             onMouseOver={() => handleFigtherMouseOver(id)}
             onMouseLeave={handleFigtherMouseLeave}
             onClick={() => handleFighterClick(id)}
+            hasEvents={hasEvents}
           >
             {isPlayer && <span>{isPlayerOne ? "1P" : "2P"}</span>}
             <button />

@@ -18,4 +18,18 @@ export const Container = styled.main`
     align-items: center;
     justify-content: center;
   }
+
+  strong {
+    display: block;
+
+    font-size: 2.4rem;
+    text-align: center;
+
+    margin: 0 0 3.6rem;
+  }
+
+  #lottie {
+    width: 12rem;
+    height: 12rem;
+  }
 `;

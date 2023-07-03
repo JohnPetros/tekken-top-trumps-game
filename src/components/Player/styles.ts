@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 
 interface Player {
   isBot: boolean;
+  isWinner: boolean | null;
 }
 
 export const Container = styled.div<Player>`
@@ -15,8 +16,14 @@ export const Container = styled.div<Player>`
     height: 64rem;
   }
 
-  > div:first-child {
-  }
+  transition: filter 1s;
+
+  filter: ${({ isWinner }) =>
+    isWinner === null
+      ? "none"
+      : isWinner
+      ? "brightness(1.8)"
+      : "grayscale(100%)"};
 `;
 
 interface Background {
@@ -34,11 +41,12 @@ export const Background = styled(motion.div)<Background>`
     const color = theme.colors[isBot ? "red" : "blue_300"];
     return `linear-gradient(90deg, ${color}, transparent 95%)`;
   }};
-  z-index: 1;
 `;
 
 interface Fighter {
   image: string;
+  isBot: boolean;
+  hasEvents: boolean;
 }
 
 export const Fighter = styled(motion.div)<Player & Fighter>`
@@ -62,6 +70,12 @@ export const Fighter = styled(motion.div)<Player & Fighter>`
     background-position: -20rem center;
     transform: ${({ isBot }) => (isBot ? "scaleX(-1)" : "scaleX(1)")};
     z-index: -1;
+  }
+
+  cursor: ${({ hasEvents }) => (hasEvents ? "auto" : "not-allowed")};
+
+  button {
+    pointer-events: ${({ hasEvents }) => (hasEvents ? "auto" : "none")};
   }
 
   display: flex;

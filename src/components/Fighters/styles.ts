@@ -13,6 +13,7 @@ export const Container = styled.div`
 
 interface Fighter {
   image: string;
+  hasEvents: boolean;
 }
 
 export const Fighter = styled(motion.div)<Fighter>`
@@ -26,11 +27,7 @@ export const Fighter = styled(motion.div)<Fighter>`
   background-position: 75% top;
   background-image: ${({ image }) => `url(${image})`};
 
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.1);
-  }
+  cursor: ${({ hasEvents }) => (hasEvents ? "auto" : "not-allowed")};
 
   span {
     color: ${({ theme }) => theme.colors.white};
@@ -41,6 +38,11 @@ export const Fighter = styled(motion.div)<Fighter>`
     width: 100%;
     height: 100%;
     background: transparent;
-    /* cursor: not-allowed; */
+    transition: transform 0.2s;
+    pointer-events: ${({ hasEvents }) => (hasEvents ? "auto" : "none")};
+  }
+
+  button:hover {
+    transform: scale(1.1);
   }
 `;

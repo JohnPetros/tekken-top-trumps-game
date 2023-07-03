@@ -16,6 +16,7 @@ import theme from "../../styles/theme";
 interface PlayerProps {
   fighter: FighterData | null;
   isBot?: boolean;
+  isWinner: boolean | null;
 }
 
 interface Stat {
@@ -28,15 +29,17 @@ interface AattributesStats {
   stats: Stat[];
 }
 
-export function Player({ fighter, isBot = false }: PlayerProps) {
+export function Player({ fighter, isBot = false, isWinner }: PlayerProps) {
   const {
-    state: { selectedAttribute },
+    state: { selectedAttribute, stage },
     dispatch,
   } = useGame();
   const [attributesStats, setAttributesStats] = useState<AattributesStats[]>(
     []
   );
   const color = theme.colors[isBot ? "red" : "blue_300"];
+  const hasEvents =
+    stage !== "fighterTwo-selection" && stage !== "round-result";
 
   function handleAttributeClick(attribute: string) {
     dispatch({ type: "setSelectedAttribute", payload: attribute });
@@ -66,7 +69,7 @@ export function Player({ fighter, isBot = false }: PlayerProps) {
   }, [fighter]);
 
   return (
-    <Container isBot={isBot}>
+    <Container isBot={isBot} isWinner={isWinner}>
       <Background
         animate={{ opacity: [0, 0.5] }}
         transition={{ duration: 0.4 }}
@@ -76,6 +79,7 @@ export function Player({ fighter, isBot = false }: PlayerProps) {
         <Fighter
           key={fighter.id}
           isBot={isBot}
+          hasEvents={hasEvents}
           image={`https://i.postimg.cc/${fighter.image}`}
           initial={{ x: isBot ? 20 : -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
@@ -87,7 +91,9 @@ export function Player({ fighter, isBot = false }: PlayerProps) {
                 {attributesStats.map(({ name, stats }) => (
                   <Attribute
                     color={color}
-                    onClick={() => handleAttributeClick(name)}
+                    onClick={() =>
+                      hasEvents ? handleAttributeClick(name) : null
+                    }
                   >
                     <dt
                       style={{
