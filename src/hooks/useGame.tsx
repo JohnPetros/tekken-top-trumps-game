@@ -30,11 +30,11 @@ type Stage =
   | "round-result";
 
 type GameAction =
-  | { type: "setPlayerOneFighter"; payload: Fighter }
-  | { type: "setPlayerTwoFighter"; payload: Fighter }
+  | { type: "setPlayerOneFighter"; payload: Fighter | null }
+  | { type: "setPlayerTwoFighter"; payload: Fighter | null }
   | { type: "setPreviewFighter"; payload: Fighter | null }
   | { type: "setSelectedAttribute"; payload: string | null }
-  | { type: "setWinner"; payload: Winner }
+  | { type: "setWinner"; payload: Winner | null }
   | { type: "setStage"; payload: Stage };
 
 interface GameProviderProps {
@@ -89,7 +89,10 @@ function GameReducer(state: GameState, action: GameAction) {
     case "setWinner":
       let { playerOne, playerTwo } = state;
 
-      if (action.payload === "playerOne") {
+      if (!action.payload) {
+        playerOne.isWinner = null;
+        playerTwo.isWinner = null;
+      } else if (action.payload === "playerOne") {
         playerOne.isWinner = true;
         playerOne.score = playerOne.score + 1;
 
@@ -100,13 +103,11 @@ function GameReducer(state: GameState, action: GameAction) {
 
         playerOne.isWinner = false;
       }
-      console.log(playerOne.score, playerTwo.score);
 
       return {
         ...state,
         playerOne,
         playerTwo,
-        stage: "round-result",
       };
     case "setStage":
       return {

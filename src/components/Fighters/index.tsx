@@ -79,14 +79,15 @@ export function Fighters({ disabledFightersIds }: FighterProps) {
             image={`https://i.postimg.cc/${image}`}
             variants={shadowAnimation}
             animate={isPlayer ? "active" : "desactive"}
-            onMouseOver={() => handleFigtherMouseOver(id)}
-            onMouseLeave={handleFigtherMouseLeave}
-            onClick={() => handleFighterClick(id)}
             hasEvents={hasEvents}
             isDisabled={isDisabled}
           >
             {isPlayer && <span>{isPlayerOne ? "1P" : "2P"}</span>}
-            <button />
+            <button
+              onMouseOver={() => handleFigtherMouseOver(id)}
+              onMouseLeave={handleFigtherMouseLeave}
+              onClick={() => handleFighterClick(id)}
+            />
           </Fighter>
         );
       })}

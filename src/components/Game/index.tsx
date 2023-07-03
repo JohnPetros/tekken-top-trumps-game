@@ -42,12 +42,6 @@ export function Game() {
     } else {
       setWinner("playerTwo");
     }
-
-    setDisabledFightersIds((currentDisabledFightersIds) => [
-      ...currentDisabledFightersIds,
-      playerOne.fighter!.id,
-      playerTwo.fighter!.id,
-    ]);
   }
 
   function getRandomFighter() {
@@ -99,7 +93,26 @@ export function Game() {
     }
   }
 
-  function handleNextRoundButtonClick() {}
+  function resetFighters() {
+    setDisabledFightersIds((currentDisabledFightersIds) => [
+      ...currentDisabledFightersIds,
+      playerOne.fighter!.id,
+      playerTwo.fighter!.id,
+    ]);
+
+    dispatch({ type: "setPlayerOneFighter", payload: null });
+    dispatch({ type: "setPlayerTwoFighter", payload: null });
+    dispatch({ type: "setPreviewFighter", payload: null });
+  }
+
+  function handleNextRoundButtonClick() {
+    resetFighters();
+    setIsRoundResultModalVisible(false);
+    
+    dispatch({ type: "setWinner", payload: null });
+    dispatch({ type: "setSelectedAttribute", payload: null });
+    dispatch({ type: "setStage", payload: "fighterOne-selection" });
+  }
 
   useEffect(() => {
     setIsFightButtonVisible(!!selectedAttribute);

@@ -28,7 +28,10 @@ export const Fighter = styled(motion.div)<Fighter>`
   background-position: 75% top;
   background-image: ${({ image }) => `url(${image})`};
 
-  cursor: ${({ hasEvents }) => (hasEvents ? "auto" : "not-allowed")};
+  transition: transform 0.2s;
+
+  cursor: ${({ hasEvents, isDisabled }) =>
+    hasEvents && !isDisabled ? "auto" : "not-allowed"};
 
   filter: ${({ isDisabled }) =>
     isDisabled ? "grayscale(100%)" : "grayscale(0)"};
@@ -42,11 +45,11 @@ export const Fighter = styled(motion.div)<Fighter>`
     width: 100%;
     height: 100%;
     background: transparent;
-    transition: transform 0.2s;
-    pointer-events: ${({ hasEvents }) => (hasEvents ? "auto" : "none")};
+    pointer-events: ${({ hasEvents, isDisabled }) =>
+      hasEvents && !isDisabled ? "auto" : "none"};
   }
 
-  button:hover {
+  &:hover {
     transform: scale(1.1);
   }
 `;
