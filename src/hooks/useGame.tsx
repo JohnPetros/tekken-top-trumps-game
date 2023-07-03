@@ -38,7 +38,8 @@ type GameAction =
   | { type: "setWinner"; payload: PlayerName | null }
   | { type: "setTurn"; payload: PlayerName }
   | { type: "setIsEndGame"; payload: boolean }
-  | { type: "setStage"; payload: Stage };
+  | { type: "setStage"; payload: Stage }
+  | { type: "resetGame" };
 
 interface GameProviderProps {
   children: ReactNode;
@@ -148,8 +149,19 @@ function GameReducer(state: GameState, action: GameAction) {
         ...state,
         turn: action.payload,
       };
+    case "setIsEndGame":
+      return {
+        ...state,
+        isEndGame: action.payload,
+      };
+    case "setIsEndGame":
+      return {
+        ...state,
+        isEndGame: action.payload,
+      };
+    case "resetGame":
     default:
-      return state;
+      return initialState;
   }
 }
 

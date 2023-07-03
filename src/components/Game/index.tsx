@@ -57,12 +57,13 @@ export function Game() {
     ) {
       setWinner("playerOne");
     } else if (
-      (playerOne.selectedFighter.attributes[selectedAttribute] =
-        playerTwo.selectedFighter.attributes[selectedAttribute])
+      playerOne.selectedFighter.attributes[selectedAttribute] ===
+      playerTwo.selectedFighter.attributes[selectedAttribute]
     ) {
       setWinner(null);
+    } else {
+      setWinner("playerTwo");
     }
-    setWinner("playerOne");
   }
 
   function getRandomFighter(fighters: Fighter[]) {
@@ -155,12 +156,27 @@ export function Game() {
   }
 
   function handleNextRoundButtonClick() {
+    if (playerOne.fighters.length === 20) {
+      dispatch({ type: "setWinner", payload: "playerOne" });
+      dispatch({ type: "setIsEndGame", payload: true });
+      return;
+    } else if (playerTwo.fighters.length === 20) {
+      dispatch({ type: "setWinner", payload: "playerTwo" });
+      dispatch({ type: "setIsEndGame", payload: true });
+      return;
+    }
+
     exchangeLoserFighter();
 
     dispatch({ type: "setPlayerTwoSelectedFighter", payload: null });
     dispatch({ type: "setWinner", payload: null });
     dispatch({ type: "setStage", payload: "attribute-selection" });
     setIsRoundResultModalVisible(false);
+  }
+
+  function handleEndGameButtonClick() {
+    setIsRoundResultModalVisible(false);
+    dispatch({ type: "resetGame" });
   }
 
   function isPlayerOneFighter(fighter: Fighter) {
@@ -272,6 +288,7 @@ export function Game() {
           <Animation
             autoplay
             keepLastFrame
+            style={{ width: "12rem", height: "12rem" }}
             src={getModalAnimation(playerOne.isWinner)}
           ></Animation>
           <strong
@@ -282,6 +299,29 @@ export function Game() {
             {getModalMessage(playerOne.isWinner)}
           </strong>
           <Button title="Next Round" onClick={handleNextRoundButtonClick} />
+        </Modal>
+      )}
+
+      {isEndGame && (
+        <Modal>
+          <Animation
+            autoplay
+            keepLastFrame
+            style={{ width: "24rem", height: "24rem" }}
+            src={
+              playerOne.isWinner
+                ? "https://assets9.lottiefiles.com/packages/lf20_touohxv0.json"
+                : "https://assets4.lottiefiles.com/packages/lf20_q1i4uDv2pj.json"
+            }
+          ></Animation>
+          <strong
+            style={{
+              color: theme.colors[playerOne.isWinner ? "yellow" : "red"],
+            }}
+          >
+            {playerOne.isWinner ? "You're the champion!" : "You're the loser"}
+          </strong>
+          <Button title="Reset Game" onClick={handleEndGameButtonClick} />
         </Modal>
       )}
     </Container>

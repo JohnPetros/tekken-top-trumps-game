@@ -91,7 +91,6 @@ export const SelectedFighter = styled(motion.div)<SelectedFighter>`
     align-self: ${({ isBot }) => (isBot ? "flex-start" : "flex-end")};
 
     font-size: 2.4rem;
-    font: ${({ theme }) => theme.fonts.title};
 
     margin-top: 1.2rem;
   }
