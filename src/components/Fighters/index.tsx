@@ -1,94 +1,70 @@
-import { Fighter as FighterData, useGame } from "../../hooks/useGame";
-import { Variants } from "framer-motion";
+import { Fighter, useGame } from "../../hooks/useGame";
 
-import { Container, Fighter } from "./styles";
-import theme from "../../styles/theme";
+import { Container, FighterCard } from "./styles";
 import { fighters } from "../../utils/fighters";
 
-interface FighterProps {
-  disabledFightersIds: number[];
-}
-
-export function Fighters({ disabledFightersIds }: FighterProps) {
+export function Fighters() {
   const {
     state: { playerOne, playerTwo, stage },
     dispatch,
   } = useGame();
-  const hasEvents =
-    stage !== "fighterTwo-selection" && stage !== "round-result";
 
   function getFighter(id: number) {
     return fighters.find((fighter) => fighter.id === id)!;
   }
 
-  function handleFigtherMouseOver(id: number) {
-    if (!hasEvents) return;
-
-    const fighter: FighterData = getFighter(id);
-    dispatch({ type: "setPreviewFighter", payload: fighter });
+  function setPlayerOneSelectedFighter(fighter: Fighter | null) {
+    dispatch({ type: "setPlayerOneSelectedFighter", payload: fighter });
   }
 
-  function handleFigtherMouseLeave() {
-    dispatch({ type: "setPreviewFighter", payload: null });
+  function setPlayerOneFighters(newFighter: Fighter) {
+    dispatch({ type: "setPlayerOneFighters", payload: newFighter });
+  }
+
+  function handleFighterMouseOver(id: number) {
+    const fighter: Fighter = getFighter(id);
+    setPlayerOneSelectedFighter(fighter);
+  }
+
+  function handleFighterMouseLeave() {
+    if (stage !== "fighters-selection") return;
+    setPlayerOneSelectedFighter(null);
   }
 
   function handleFighterClick(id: number) {
-    const fighter: FighterData = getFighter(id);
-    dispatch({ type: "setPlayerOneFighter", payload: fighter });
-
-    const canChangeStage = playerOne.fighter === null;
-    if (canChangeStage) {
-      dispatch({ type: "setStage", payload: "attribute-selection" });
+    if (stage === "fighters-selection") {
+      const fighter: Fighter = getFighter(id);
+      setPlayerOneSelectedFighter(fighter);
+      setPlayerOneFighters(fighter);
+    } else if (stage === "attribute-selection") {
+      const fighter: Fighter = getFighter(id);
+      setPlayerOneSelectedFighter(fighter);
     }
   }
 
   return (
     <Container>
       {fighters.map(({ id, image }) => {
-        const isPlayerOne = playerOne?.fighter?.id === id;
-        const isPlayerTwo = playerTwo?.fighter?.id === id;
+        const isPlayerOne = playerOne.fighters.some(
+          (fighter) => fighter.id === id
+        );
+        const isPlayerTwo = playerTwo.fighters.some(
+          (fighter) => fighter.id === id
+        );
         const isPlayer = isPlayerOne || isPlayerTwo;
 
-        const color =
-          theme.colors[
-            isPlayerOne ? "blue_300" : isPlayerTwo ? "red" : "purple"
-          ];
-
-        const shadowAnimation: Variants = {
-          active: {
-            boxShadow: [
-              `0px 0px 12px 4px ${color}`,
-              `0px 0px 12px 8px ${color}`,
-            ],
-            transition: {
-              duration: 0.2,
-              repeat: Infinity,
-              repeatType: "mirror",
-            },
-          },
-          desactive: {
-            boxShadow: `0`,
-          },
-        };
-
-        const isDisabled = disabledFightersIds.includes(id);
-
         return (
-          <Fighter
+          <FighterCard
             key={id}
             image={`https://i.postimg.cc/${image}`}
-            variants={shadowAnimation}
-            animate={isPlayer ? "active" : "desactive"}
-            hasEvents={hasEvents}
-            isDisabled={isDisabled}
+            isPlayerOne={isPlayerOne}
+            isPlayerTwo={isPlayerTwo}
+            onMouseOver={() => handleFighterMouseOver(id)}
+            onMouseLeave={handleFighterMouseLeave}
+            onClick={() => handleFighterClick(id)}
           >
             {isPlayer && <span>{isPlayerOne ? "1P" : "2P"}</span>}
-            <button
-              onMouseOver={() => handleFigtherMouseOver(id)}
-              onMouseLeave={handleFigtherMouseLeave}
-              onClick={() => handleFighterClick(id)}
-            />
-          </Fighter>
+          </FighterCard>
         );
       })}
     </Container>

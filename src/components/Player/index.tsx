@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
-import { Fighter as FighterData, useGame } from "../../hooks/useGame";
+import { Fighter, useGame } from "../../hooks/useGame";
 import {
   Container,
   Background,
-  Fighter,
+  SelectedFighter,
   Attributes,
   Attribute,
   Checkbox,
   Stat,
   Placeholder,
   Check,
+  Fighters,
+  FighterCard,
 } from "./styles";
 import theme from "../../styles/theme";
+import { Variants } from "framer-motion";
 
 interface PlayerProps {
-  fighter: FighterData | null;
+  selectedFighter: Fighter | null;
+  fighters: Fighter[];
   isBot?: boolean;
   isWinner: boolean | null;
 }
@@ -29,25 +33,36 @@ interface AattributesStats {
   stats: Stat[];
 }
 
-export function Player({ fighter, isBot = false, isWinner }: PlayerProps) {
+export function Player({
+  selectedFighter,
+  fighters,
+  isBot = false,
+  isWinner,
+}: PlayerProps) {
   const {
-    state: { selectedAttribute, stage },
+    state: { selectedAttribute, stage, turn },
     dispatch,
   } = useGame();
   const [attributesStats, setAttributesStats] = useState<AattributesStats[]>(
     []
   );
   const color = theme.colors[isBot ? "red" : "blue_300"];
-  const hasEvents =
-    stage !== "fighterTwo-selection" && stage !== "round-result";
+  const isDisabled = stage !== "attribute-selection" || turn === "playerTwo";
 
   function handleAttributeClick(attribute: string) {
     dispatch({ type: "setSelectedAttribute", payload: attribute });
   }
 
+  function handleFighterCardClick(id: number) {
+    const selectedFighter: Fighter = fighters.find(
+      (fighter) => fighter.id === id
+    )!;
+    dispatch({ type: "setPlayerOneSelectedFighter", payload: selectedFighter });
+  }
+
   function getAttributesStats(attribute: [string, number]) {
     const [attributeName, attributeValue] = attribute;
-
+    
     let stats = [];
     for (let i = 1; i <= 10; i++) {
       const isFilled = i <= attributeValue / 10;
@@ -61,12 +76,18 @@ export function Player({ fighter, isBot = false, isWinner }: PlayerProps) {
   }
 
   useEffect(() => {
-    if (!fighter) return;
-    const attributesStats = Object.entries(fighter.attributes).map(
+    if (!selectedFighter) return;
+    const attributesStats = Object.entries(selectedFighter.attributes).map(
       getAttributesStats
     );
     setAttributesStats(attributesStats);
-  }, [fighter]);
+  }, [selectedFighter]);
+
+  useEffect(() => {
+    if (stage === "attribute-selection" && !isBot) {
+      dispatch({ type: "setPlayerOneSelectedFighter", payload: fighters[0] });
+    }
+  }, [stage]);
 
   return (
     <Container isBot={isBot} isWinner={isWinner}>
@@ -75,12 +96,12 @@ export function Player({ fighter, isBot = false, isWinner }: PlayerProps) {
         transition={{ duration: 0.4 }}
         isBot={isBot}
       />
-      {fighter ? (
-        <Fighter
-          key={fighter.id}
+      {selectedFighter ? (
+        <SelectedFighter
+          key={selectedFighter.id}
           isBot={isBot}
-          hasEvents={hasEvents}
-          image={`https://i.postimg.cc/${fighter.image}`}
+          isDisabled={isDisabled}
+          image={`https://i.postimg.cc/${selectedFighter.image}`}
           initial={{ x: isBot ? 20 : -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.4 }}
@@ -92,7 +113,7 @@ export function Player({ fighter, isBot = false, isWinner }: PlayerProps) {
                   <Attribute
                     color={color}
                     onClick={() =>
-                      hasEvents ? handleAttributeClick(name) : null
+                      !isDisabled ? handleAttributeClick(name) : null
                     }
                   >
                     <dt
@@ -135,12 +156,43 @@ export function Player({ fighter, isBot = false, isWinner }: PlayerProps) {
                 ))}
               </dl>
             </Attributes>
-            <strong>{fighter.name}</strong>
+            <strong>{selectedFighter.name}</strong>
           </>
-        </Fighter>
+        </SelectedFighter>
       ) : (
         <Placeholder isBot={isBot} />
       )}
+      <Fighters>
+        {fighters.map(({ id, image }) => {
+          const isSelected = selectedFighter?.id === id;
+
+          const shadowAnimation: Variants = {
+            active: {
+              boxShadow: [
+                `0px 0px 12px 4px ${color}`,
+                `0px 0px 12px 8px ${color}`,
+              ],
+              transition: {
+                duration: 0.2,
+                repeat: Infinity,
+                repeatType: "mirror",
+              },
+            },
+            desactive: {
+              boxShadow: `0px 0px 0px transparent`,
+            },
+          };
+          return (
+            <FighterCard
+              image={`https://i.postimg.cc/${image}`}
+              variants={shadowAnimation}
+              animate={isSelected ? "active" : "desactive"}
+              isBot={isBot}
+              onClick={() => handleFighterCardClick(id)}
+            />
+          );
+        })}
+      </Fighters>
     </Container>
   );
 }

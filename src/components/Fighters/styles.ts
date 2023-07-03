@@ -8,16 +8,18 @@ export const Container = styled.div`
   grid-template-columns: repeat(5, 1fr);
   gap: 8px;
 
-  margin-bottom: 2.4rem;
+  margin: 2.4rem 0;
+
+  transition: all 0.2s;
 `;
 
-interface Fighter {
+interface FighterCard {
   image: string;
-  hasEvents: boolean;
-  isDisabled: boolean;
+  isPlayerOne: boolean;
+  isPlayerTwo: boolean;
 }
 
-export const Fighter = styled(motion.div)<Fighter>`
+export const FighterCard = styled(motion.button)<FighterCard>`
   height: 8rem;
   padding: 4px;
 
@@ -28,25 +30,25 @@ export const Fighter = styled(motion.div)<Fighter>`
   background-position: 75% top;
   background-image: ${({ image }) => `url(${image})`};
 
-  transition: transform 0.2s;
+  border: 1px solid
+    ${({ isPlayerOne, isPlayerTwo, theme }) =>
+      isPlayerOne || isPlayerTwo
+        ? theme.colors[isPlayerOne ? "blue_300" : "red"]
+        : theme.colors.white};
 
-  cursor: ${({ hasEvents, isDisabled }) =>
-    hasEvents && !isDisabled ? "auto" : "not-allowed"};
+  display: flex;
 
-  filter: ${({ isDisabled }) =>
-    isDisabled ? "grayscale(100%)" : "grayscale(0)"};
+  transition: all 0.2s;
+
+  pointer-events: ${({ isPlayerOne, isPlayerTwo }) =>
+    isPlayerOne || isPlayerTwo ? "none" : "auto"};
+
+  filter: ${({ isPlayerTwo }) =>
+    isPlayerTwo ? "grayscale(100%)" : "grayscale(0)"};
 
   span {
     color: ${({ theme }) => theme.colors.white};
     font-size: 1.6rem;
-  }
-
-  button {
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    pointer-events: ${({ hasEvents, isDisabled }) =>
-      hasEvents && !isDisabled ? "auto" : "none"};
   }
 
   &:hover {

@@ -7,9 +7,24 @@ export const Container = styled.main`
   height: 100%;
 
   p {
+    text-align: center;
     font-size: 3.2rem;
     color: ${({ theme }) => theme.colors.white};
-    margin-bottom: 2.4rem;
+  }
+
+  p + p {
+    margin: 1.2rem;
+  }
+
+  p#attribute {
+    font-size: 2.4rem;
+    height: 6rem;
+  }
+
+  p#attribute > span {
+    color: ${({ theme }) => theme.colors.purple};
+    font-size: 2.4rem;
+    text-transform: uppercase;
   }
 
   .middle {

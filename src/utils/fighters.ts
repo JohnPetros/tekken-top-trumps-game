@@ -34,7 +34,7 @@ export const fighters = [
     name: "Geese",
     image: "P5166Lf8/Geese.png",
     attributes: {
-      force: 100,
+      force: 90,
       defense: 60,
       mobility: 60,
     },
@@ -64,7 +64,7 @@ export const fighters = [
     name: "Paul",
     image: "jjshZZkG/PAUL.png",
     attributes: {
-      force: 90,
+      force: 80,
       defense: 50,
       mobility: 60,
     },
