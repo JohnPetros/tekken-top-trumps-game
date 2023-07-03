@@ -44,9 +44,6 @@ export const FighterCard = styled(motion.button)<FighterCard>`
 
   transition: all 0.2s;
 
-  pointer-events: ${({ isPlayerOne, isPlayerTwo }) =>
-    isPlayerOne || isPlayerTwo ? "none" : "auto"};
-
   span {
     color: ${({ theme }) => theme.colors.white};
     font-size: 1.6rem;

@@ -27,12 +27,12 @@ export function Fighters() {
   }
 
   function handleFighterMouseLeave() {
-    if (stage !== "fighters-selection") return;
+    if (stage !== "fighterOne-selection") return;
     setPlayerOneSelectedFighter(null);
   }
 
   function handleFighterClick(id: number) {
-    if (stage === "fighters-selection") {
+    if (stage === "fighterOne-selection") {
       const fighter: Fighter = getFighter(id);
       setPlayerOneSelectedFighter(fighter);
       setPlayerOneFighters(fighter);
@@ -41,6 +41,8 @@ export function Fighters() {
       setPlayerOneSelectedFighter(fighter);
     }
   }
+
+  console.log({ stage });
 
   return (
     <Container>
@@ -59,6 +61,7 @@ export function Fighters() {
             image={`https://i.postimg.cc/${image}`}
             isPlayerOne={isPlayerOne}
             isPlayerTwo={isPlayerTwo}
+            disabled={stage !== "fighterOne-selection"}
             onMouseOver={() => handleFighterMouseOver(id)}
             onMouseLeave={handleFighterMouseLeave}
             onClick={() => handleFighterClick(id)}

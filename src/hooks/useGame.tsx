@@ -24,7 +24,7 @@ export interface Player {
 export type PlayerName = "playerOne" | "playerTwo";
 
 type Stage =
-  | "fighters-selection"
+  | "fighterOne-selection"
   | "fighterTwo-selection"
   | "attribute-selection"
   | "round-result";
@@ -64,7 +64,7 @@ const initialState: GameState = {
   playerTwo: { selectedFighter: null, fighters: [], isWinner: null },
   previewFighter: null,
   selectedAttribute: "",
-  stage: "fighters-selection",
+  stage: "fighterOne-selection",
   turn: "playerOne",
   isEndGame: false,
 };

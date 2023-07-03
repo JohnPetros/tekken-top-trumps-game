@@ -166,12 +166,17 @@ export function Game() {
       return;
     }
 
-    exchangeLoserFighter();
+    setIsRoundResultModalVisible(false);
 
     dispatch({ type: "setPlayerTwoSelectedFighter", payload: null });
-    dispatch({ type: "setWinner", payload: null });
     dispatch({ type: "setStage", payload: "attribute-selection" });
-    setIsRoundResultModalVisible(false);
+
+    if (playerOne.isWinner === null) {
+      return;
+    }
+
+    exchangeLoserFighter();
+    dispatch({ type: "setWinner", payload: null });
   }
 
   function handleEndGameButtonClick() {
@@ -232,7 +237,7 @@ export function Game() {
   }, [stage]);
 
   useEffect(() => {
-    if (stage !== "fighters-selection") return;
+    if (stage !== "fighterOne-selection") return;
 
     setMessage(`Select ${10 - playerOne.fighters.length} fighters`);
 
