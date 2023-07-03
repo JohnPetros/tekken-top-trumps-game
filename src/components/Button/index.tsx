@@ -22,6 +22,7 @@ export function Button({ title, onClick, isVisible = true }: ButtonProps) {
       animate={isVisible ? "visible" : "invisible"}
       transition={{ duration: 0.2 }}
       onClick={onClick}
+      isDisable={!isVisible}
     >
       {title}
     </Container>

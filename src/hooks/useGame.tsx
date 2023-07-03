@@ -16,25 +16,28 @@ export interface Fighter {
 }
 
 export interface Player {
-  score: number;
-  fighter: Fighter | null;
+  selectedFighter: Fighter | null;
+  fighters: Fighter[];
   isWinner: boolean | null;
 }
 
-export type Winner = "playerOne" | "playerTwo";
+export type PlayerName = "playerOne" | "playerTwo";
 
 type Stage =
-  | "fighterOne-selection"
+  | "fighters-selection"
   | "fighterTwo-selection"
   | "attribute-selection"
   | "round-result";
 
 type GameAction =
-  | { type: "setPlayerOneFighter"; payload: Fighter | null }
-  | { type: "setPlayerTwoFighter"; payload: Fighter | null }
-  | { type: "setPreviewFighter"; payload: Fighter | null }
+  | { type: "setPlayerOneSelectedFighter"; payload: Fighter | null }
+  | { type: "setPlayerTwoSelectedFighter"; payload: Fighter | null }
+  | { type: "setPlayerOneFighters"; payload: Fighter }
+  | { type: "setPlayerTwoFighters"; payload: Fighter }
   | { type: "setSelectedAttribute"; payload: string | null }
-  | { type: "setWinner"; payload: Winner | null }
+  | { type: "setWinner"; payload: PlayerName | null }
+  | { type: "setTurn"; payload: PlayerName }
+  | { type: "setIsEndGame"; payload: boolean }
   | { type: "setStage"; payload: Stage };
 
 interface GameProviderProps {
@@ -47,14 +50,22 @@ interface GameState {
   previewFighter: Fighter | null;
   selectedAttribute: string | null;
   stage: Stage;
+  turn: PlayerName;
+  isEndGame: boolean;
 }
 
 const initialState: GameState = {
-  playerOne: { score: 0, fighter: null, isWinner: null },
-  playerTwo: { score: 0, fighter: null, isWinner: null },
+  playerOne: {
+    selectedFighter: null,
+    fighters: [],
+    isWinner: null,
+  },
+  playerTwo: { selectedFighter: null, fighters: [], isWinner: null },
   previewFighter: null,
   selectedAttribute: "",
-  stage: "fighterOne-selection",
+  stage: "fighters-selection",
+  turn: "playerOne",
+  isEndGame: false,
 };
 
 interface Context {
@@ -64,22 +75,44 @@ interface Context {
 
 const GameContext = createContext({} as Context);
 
+function getUpdatedFighters(currentFighters: Fighter[], newFighter: Fighter) {
+  const isIncluded = currentFighters.some(({ id }) => id === newFighter!.id);
+
+  if (isIncluded) {
+    return currentFighters.filter(({ id }) => id !== newFighter.id);
+  }
+  return [...currentFighters, newFighter];
+}
+
 function GameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
-    case "setPlayerOneFighter":
+    case "setPlayerOneSelectedFighter":
       return {
         ...state,
-        playerOne: { ...state.playerOne, fighter: action.payload },
+        playerOne: { ...state.playerOne, selectedFighter: action.payload },
       };
-    case "setPlayerTwoFighter":
+    case "setPlayerTwoSelectedFighter":
       return {
         ...state,
-        playerTwo: { ...state.playerTwo, fighter: action.payload },
+        playerTwo: { ...state.playerTwo, selectedFighter: action.payload },
       };
-    case "setPreviewFighter":
+    case "setPlayerOneFighters":
+      const playerOneUpdatedFighters = getUpdatedFighters(
+        state.playerOne.fighters,
+        action.payload
+      );
       return {
         ...state,
-        previewFighter: action.payload,
+        playerOne: { ...state.playerOne, fighters: playerOneUpdatedFighters },
+      };
+    case "setPlayerTwoFighters":
+      const playerTwoUpdatedFighters = getUpdatedFighters(
+        state.playerTwo.fighters,
+        action.payload
+      );
+      return {
+        ...state,
+        playerTwo: { ...state.playerTwo, fighters: playerTwoUpdatedFighters },
       };
     case "setSelectedAttribute":
       return {
@@ -94,13 +127,9 @@ function GameReducer(state: GameState, action: GameAction) {
         playerTwo.isWinner = null;
       } else if (action.payload === "playerOne") {
         playerOne.isWinner = true;
-        playerOne.score = playerOne.score + 1;
-
         playerTwo.isWinner = false;
       } else {
         playerTwo.isWinner = true;
-        playerTwo.score = playerTwo.score + 1;
-
         playerOne.isWinner = false;
       }
 
@@ -113,6 +142,11 @@ function GameReducer(state: GameState, action: GameAction) {
       return {
         ...state,
         stage: action.payload,
+      };
+    case "setTurn":
+      return {
+        ...state,
+        turn: action.payload,
       };
     default:
       return state;

@@ -1,7 +1,11 @@
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-export const Container = styled(motion.button)`
+interface Button {
+  isDisable: boolean;
+}
+
+export const Container = styled(motion.button)<Button>`
   width: 14rem;
   padding: 1.2rem;
 
@@ -14,6 +18,8 @@ export const Container = styled(motion.button)`
   text-align: center;
 
   transition: all 0.2s ease;
+
+  pointer-events: ${({ isDisable }) => (isDisable ? "none" : "auto")};
 
   &:hover {
     color: ${({ theme }) => theme.colors.purple};

@@ -22,7 +22,7 @@ export const Container = styled.div<Player>`
     isWinner === null
       ? "none"
       : isWinner
-      ? "brightness(1.8)"
+      ? "brightness(1.5)"
       : "grayscale(100%)"};
 `;
 
@@ -43,13 +43,13 @@ export const Background = styled(motion.div)<Background>`
   }};
 `;
 
-interface Fighter {
+interface SelectedFighter {
   image: string;
   isBot: boolean;
-  hasEvents: boolean;
+  isDisabled: boolean;
 }
 
-export const Fighter = styled(motion.div)<Fighter>`
+export const SelectedFighter = styled(motion.div)<SelectedFighter>`
   width: 100%;
   padding: ${({ isBot }) => (isBot ? "0 0 0 8rem" : "0 8rem 0 0")};
 
@@ -72,10 +72,12 @@ export const Fighter = styled(motion.div)<Fighter>`
     z-index: -1;
   }
 
-  cursor: ${({ hasEvents }) => (hasEvents ? "auto" : "not-allowed")};
+  cursor: ${({ isDisabled }) => (isDisabled ? "not-allowed" : "auto")};
 
   button {
-    pointer-events: ${({ hasEvents }) => (hasEvents ? "auto" : "none")};
+    cursor: ${({ isDisabled }) => (isDisabled ? "not-allowed" : "pointer")};
+    pointer-events: ${({ isDisabled }) =>
+      isDisabled ? "none" : "auto"} !important;
   }
 
   display: flex;
@@ -91,7 +93,7 @@ export const Fighter = styled(motion.div)<Fighter>`
     font-size: 2.4rem;
     font: ${({ theme }) => theme.fonts.title};
 
-    margin-top: 2.4rem;
+    margin-top: 1.2rem;
   }
 `;
 
@@ -216,4 +218,43 @@ export const Placeholder = styled.div<Placeholder>`
   }
 
   background: rgba(1, 1, 1, 0.5);
+`;
+
+export const Fighters = styled.div`
+  width: 100%;
+  height: 8rem !important;
+  padding: 0 4rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+
+  position: absolute;
+  bottom: 12rem;
+  z-index: 15;
+`;
+
+interface FighterCard {
+  image: string;
+  isBot: boolean;
+}
+
+export const FighterCard = styled(motion.button)<FighterCard>`
+  width: 4.8rem;
+  height: 4.8rem;
+
+  border: 1px solid ${({ theme }) => theme.colors.white};
+  border-radius: 8px;
+  background-image: ${({ image }) => `url(${image})`};
+  background-color: ${({ theme }) => theme.colors.blue_700};
+  background-size: 300%;
+  background-position: 75% top;
+
+  pointer-events: ${({ isBot }) => (isBot ? "none" : "auto")};
+
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 `;
