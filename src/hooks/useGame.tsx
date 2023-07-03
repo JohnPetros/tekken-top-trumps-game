@@ -5,27 +5,32 @@ export interface Fighter {
   name: string;
   image: string;
   attributes: {
-    force: number;
-    defense: number;
-    mobility: number;
+    [force: string]: number;
+    [defense: string]: number;
+    [mobility: string]: number;
   };
 }
 
 export interface Player {
   score: number;
   fighter: Fighter | null;
+  isWinner: boolean | null;
 }
+
+export type Winner = "playerOne" | "playerTwo";
 
 type Stage =
   | "fighterOne-selection"
   | "fighterTwo-selection"
-  | "attribute-selection";
+  | "attribute-selection"
+  | "round-result";
 
 type GameAction =
   | { type: "setPlayerOneFighter"; payload: Fighter }
   | { type: "setPlayerTwoFighter"; payload: Fighter }
   | { type: "setPreviewFighter"; payload: Fighter | null }
-  | { type: "setSelectedAttribute"; payload: string | null };
+  | { type: "setSelectedAttribute"; payload: string | null }
+  | { type: "setWinner"; payload: Winner };
 
 interface GameProviderProps {
   children: ReactNode;
@@ -40,8 +45,8 @@ interface GameState {
 }
 
 const initialState: GameState = {
-  playerOne: { score: 0, fighter: null },
-  playerTwo: { score: 0, fighter: null },
+  playerOne: { score: 0, fighter: null, isWinner: null },
+  playerTwo: { score: 0, fighter: null, isWinner: null },
   previewFighter: null,
   selectedAttribute: "",
   stage: "fighterOne-selection",
@@ -57,15 +62,16 @@ const GameContext = createContext({} as Context);
 function GameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
     case "setPlayerOneFighter":
+      const canChangeStage = !state.playerOne.fighter;
       return {
         ...state,
-        stage: "attribute-selection",
+        stage: canChangeStage ? "attribute-selection" : state.stage,
         playerOne: { ...state.playerOne, fighter: action.payload },
       };
     case "setPlayerTwoFighter":
       return {
         ...state,
-        playerOne: { ...state.playerTwo, fighter: action.payload },
+        playerTwo: { ...state.playerTwo, fighter: action.payload },
       };
     case "setPreviewFighter":
       return {
@@ -75,7 +81,27 @@ function GameReducer(state: GameState, action: GameAction) {
     case "setSelectedAttribute":
       return {
         ...state,
+        stage: "fighterTwo-selection",
         selectedAttribute: action.payload,
+      };
+    case "setWinner":
+      let { playerOne, playerTwo } = state;
+      if (action.payload === "playerOne") {
+        playerOne.isWinner = true;
+        playerOne.score = playerOne.score++;
+
+        playerTwo.isWinner = false;
+      } else {
+        playerTwo.isWinner = true;
+        playerTwo.score = playerTwo.score++;
+
+        playerOne.isWinner = false;
+      }
+      return {
+        ...state,
+        playerOne,
+        playerTwo,
+        stage: "round-result",
       };
     default:
       return state;

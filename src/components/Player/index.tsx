@@ -36,6 +36,7 @@ export function Player({ fighter, isBot = false }: PlayerProps) {
   const [attributesStats, setAttributesStats] = useState<AattributesStats[]>(
     []
   );
+  const color = theme.colors[isBot ? "red" : "blue_300"];
 
   function handleAttributeClick(attribute: string) {
     dispatch({ type: "setSelectedAttribute", payload: attribute });
@@ -76,7 +77,7 @@ export function Player({ fighter, isBot = false }: PlayerProps) {
           key={fighter.id}
           isBot={isBot}
           image={`https://i.postimg.cc/${fighter.image}`}
-          initial={{ x: isBot ? 40 : -40, opacity: 0 }}
+          initial={{ x: isBot ? 20 : -20, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 0.4 }}
         >
@@ -85,20 +86,20 @@ export function Player({ fighter, isBot = false }: PlayerProps) {
               <dl>
                 {attributesStats.map(({ name, stats }) => (
                   <Attribute
-                    isBot={isBot}
+                    color={color}
                     onClick={() => handleAttributeClick(name)}
                   >
                     <dt
                       style={{
                         color:
                           selectedAttribute === name
-                            ? theme.colors.blue_300
+                            ? theme.colors[isBot ? "red" : "blue_300"]
                             : "inherit",
                       }}
                     >
                       <Checkbox
                         isChecked={selectedAttribute === name}
-                        isBot={isBot}
+                        color={color}
                       >
                         {selectedAttribute === name && (
                           <Check
@@ -118,6 +119,7 @@ export function Player({ fighter, isBot = false }: PlayerProps) {
                             key={String(id)}
                             isFilled={isFilled}
                             isBot={isBot}
+                            color={color}
                             isSelected={selectedAttribute === name}
                           />
                         );

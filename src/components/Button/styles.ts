@@ -15,15 +15,9 @@ export const Container = styled(motion.button)`
 
   transition: all 0.2s ease;
 
-  &:disabled {
-    transform: scale(0.9);
-    opacity: 0.5 !important;
-  }
-
   &:hover {
     color: ${({ theme }) => theme.colors.purple};
     border-color: ${({ theme }) => theme.colors.purple};
-    transform: scale(1.04);
   }
 
   & + & {

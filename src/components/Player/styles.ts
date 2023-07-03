@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { motion } from "framer-motion";
 
 interface Player {
@@ -113,7 +113,7 @@ export const Attributes = styled.div`
 `;
 
 interface Attribute {
-  isBot: boolean;
+  color: string;
 }
 
 export const Attribute = styled.button<Attribute>`
@@ -124,26 +124,21 @@ export const Attribute = styled.button<Attribute>`
   text-transform: capitalize;
 
   &:hover {
-    color: ${({ isBot, theme }) => theme.colors[isBot ? "red" : "blue_300"]};
+    color: ${({ color }) => color};
   }
 `;
 
 interface Checkbox {
   isChecked: boolean;
-  isBot: boolean;
+  color: string;
 }
 
 export const Checkbox = styled.span<Checkbox>`
   width: 1.6rem;
   height: 1.6rem;
   border-radius: 50%;
-  background: ${({ isChecked, isBot, theme }) => {
-    const { blue_300, red, gray } = theme.colors;
-    if (isChecked) {
-      return isBot ? red : blue_300;
-    }
-    return gray;
-  }};
+  background: ${({ isChecked, color, theme }) =>
+    isChecked ? color : theme.colors.gray};
 
   display: grid;
   place-content: center;
@@ -152,17 +147,6 @@ export const Checkbox = styled.span<Checkbox>`
     font-size: 1.2rem;
     color: ${({ theme }) => theme.colors.white};
   }
-
-  /* ${({ isChecked }) =>
-    isChecked &&
-    css`
-      &::before {
-        content: "✔";
-        display: block;
-        font-size: 1.2rem;
-        color: ${({ theme }) => theme.colors.white};
-      }
-    `} */
 `;
 
 export const Check = styled(motion.span)`
@@ -175,17 +159,16 @@ interface Stat {
   isFilled: boolean;
   isBot: boolean;
   isSelected: boolean;
+  color: string;
 }
 
 export const Stat = styled.span<Stat>`
   display: inline-block;
   width: 1.2rem;
   height: 1.2rem;
-  background: ${({ isFilled, isSelected, isBot, theme }) => {
+  background: ${({ isFilled, isSelected, color, theme }) => {
     if (isFilled) {
-      return isSelected
-        ? theme.colors[isBot ? "red" : "blue_300"]
-        : "linear-gradient(90deg, #9b28a1, #d638dd)";
+      return isSelected ? color : "linear-gradient(90deg, #9b28a1, #d638dd)";
     } else {
       return theme.colors.gray;
     }
