@@ -49,7 +49,7 @@ interface Fighter {
   hasEvents: boolean;
 }
 
-export const Fighter = styled(motion.div)<Player & Fighter>`
+export const Fighter = styled(motion.div)<Fighter>`
   width: 100%;
   padding: ${({ isBot }) => (isBot ? "0 0 0 8rem" : "0 8rem 0 0")};
 

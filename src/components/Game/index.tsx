@@ -8,6 +8,7 @@ import { Button } from "../Button";
 import { Modal } from "../Modal";
 
 import Success from "../../assets/animations/success.json";
+import Fail from "../../assets/animations/fail.json";
 
 import { Player as Animation } from "@lottiefiles/react-lottie-player";
 import { Container } from "./styles";
@@ -108,7 +109,7 @@ export function Game() {
   function handleNextRoundButtonClick() {
     resetFighters();
     setIsRoundResultModalVisible(false);
-    
+
     dispatch({ type: "setWinner", payload: null });
     dispatch({ type: "setSelectedAttribute", payload: null });
     dispatch({ type: "setStage", payload: "fighterOne-selection" });
@@ -163,8 +164,18 @@ export function Game() {
 
       {isRoundResultModalVisible && (
         <Modal>
-          <Animation autoplay keepLastFrame src={Success}></Animation>
-          <strong style={{ color: theme.colors.blue_300 }}>You wins!</strong>
+          <Animation
+            autoplay
+            keepLastFrame
+            src={playerOne.isWinner ? Success : Fail}
+          ></Animation>
+          <strong
+            style={{
+              color: theme.colors[playerOne.isWinner ? "blue_300" : "red"],
+            }}
+          >
+            {playerOne.isWinner ? "You won!" : "You lost!"}
+          </strong>
           <Button title="Next Round" onClick={handleNextRoundButtonClick} />
         </Modal>
       )}
