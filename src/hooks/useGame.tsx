@@ -67,10 +67,8 @@ const GameContext = createContext({} as Context);
 function GameReducer(state: GameState, action: GameAction) {
   switch (action.type) {
     case "setPlayerOneFighter":
-      const canChangeStage = !state.playerOne.fighter;
       return {
         ...state,
-        stage: canChangeStage ? "attribute-selection" : state.stage,
         playerOne: { ...state.playerOne, fighter: action.payload },
       };
     case "setPlayerTwoFighter":
@@ -93,17 +91,17 @@ function GameReducer(state: GameState, action: GameAction) {
 
       if (action.payload === "playerOne") {
         playerOne.isWinner = true;
-        playerOne.score = playerOne.score++;
+        playerOne.score = playerOne.score + 1;
 
         playerTwo.isWinner = false;
       } else {
         playerTwo.isWinner = true;
-        playerTwo.score = playerTwo.score++;
+        playerTwo.score = playerTwo.score + 1;
 
         playerOne.isWinner = false;
       }
       console.log(playerOne.score, playerTwo.score);
-      
+
       return {
         ...state,
         playerOne,

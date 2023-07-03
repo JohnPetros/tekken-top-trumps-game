@@ -5,7 +5,11 @@ import { Container, Fighter } from "./styles";
 import theme from "../../styles/theme";
 import { fighters } from "../../utils/fighters";
 
-export function Fighters() {
+interface FighterProps {
+  disabledFightersIds: number[];
+}
+
+export function Fighters({ disabledFightersIds }: FighterProps) {
   const {
     state: { playerOne, playerTwo, stage },
     dispatch,
@@ -31,6 +35,11 @@ export function Fighters() {
   function handleFighterClick(id: number) {
     const fighter: FighterData = getFighter(id);
     dispatch({ type: "setPlayerOneFighter", payload: fighter });
+
+    const canChangeStage = playerOne.fighter === null;
+    if (canChangeStage) {
+      dispatch({ type: "setStage", payload: "attribute-selection" });
+    }
   }
 
   return (
@@ -62,6 +71,8 @@ export function Fighters() {
           },
         };
 
+        const isDisabled = disabledFightersIds.includes(id);
+
         return (
           <Fighter
             key={id}
@@ -72,6 +83,7 @@ export function Fighters() {
             onMouseLeave={handleFigtherMouseLeave}
             onClick={() => handleFighterClick(id)}
             hasEvents={hasEvents}
+            isDisabled={isDisabled}
           >
             {isPlayer && <span>{isPlayerOne ? "1P" : "2P"}</span>}
             <button />

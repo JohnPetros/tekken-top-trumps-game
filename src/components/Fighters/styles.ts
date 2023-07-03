@@ -14,6 +14,7 @@ export const Container = styled.div`
 interface Fighter {
   image: string;
   hasEvents: boolean;
+  isDisabled: boolean;
 }
 
 export const Fighter = styled(motion.div)<Fighter>`
@@ -28,6 +29,9 @@ export const Fighter = styled(motion.div)<Fighter>`
   background-image: ${({ image }) => `url(${image})`};
 
   cursor: ${({ hasEvents }) => (hasEvents ? "auto" : "not-allowed")};
+
+  filter: ${({ isDisabled }) =>
+    isDisabled ? "grayscale(100%)" : "grayscale(0)"};
 
   span {
     color: ${({ theme }) => theme.colors.white};

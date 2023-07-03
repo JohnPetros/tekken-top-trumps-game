@@ -20,7 +20,7 @@ export function Game() {
     dispatch,
   } = useGame();
   const [message, setMessage] = useState("Select your fighter");
-  const [usedFightersIds, setUsedFightersIds] = useState<number[]>([]);
+  const [disabledFightersIds, setDisabledFightersIds] = useState<number[]>([]);
   const [isFightButtonVisible, setIsFightButtonVisible] = useState(false);
   const [isRoundResultModalVisible, setIsRoundResultModalVisible] =
     useState(false);
@@ -28,6 +28,7 @@ export function Game() {
 
   function setWinner(winner: Winner) {
     dispatch({ type: "setWinner", payload: winner });
+    dispatch({ type: "setStage", payload: "round-result" });
   }
 
   function compareFighters() {
@@ -42,8 +43,8 @@ export function Game() {
       setWinner("playerTwo");
     }
 
-    setUsedFightersIds((currentUsedFightersIds) => [
-      ...currentUsedFightersIds,
+    setDisabledFightersIds((currentDisabledFightersIds) => [
+      ...currentDisabledFightersIds,
       playerOne.fighter!.id,
       playerTwo.fighter!.id,
     ]);
@@ -72,7 +73,7 @@ export function Game() {
         } else {
           reject("Fail to get the fighter");
         }
-      }, 1000);
+      }, 500);
     });
   }
 
@@ -93,7 +94,6 @@ export function Game() {
       }
 
       dispatch({ type: "setStage", payload: "round-result" });
-      console.log("oi");
     } catch (error) {
       console.error(error);
     }
@@ -106,8 +106,6 @@ export function Game() {
   }, [selectedAttribute]);
 
   useEffect(() => {
-    console.log({ stage });
-
     switch (stage) {
       case "fighterOne-selection":
         setMessage("Select your fighter");
@@ -136,7 +134,7 @@ export function Game() {
       <div className="middle">
         <p>{message}</p>
         <Scoreboard />
-        <Fighters />
+        <Fighters disabledFightersIds={disabledFightersIds} />
         <Button
           title="Fight!!"
           onClick={handleFightButtonClick}
