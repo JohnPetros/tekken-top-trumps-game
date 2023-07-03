@@ -42,9 +42,4 @@ export const Container = styled.main`
 
     margin: 0 0 3.6rem;
   }
-
-  #lottie {
-    width: 12rem;
-    height: 12rem;
-  }
 `;
