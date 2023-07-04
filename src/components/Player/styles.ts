@@ -219,7 +219,7 @@ export const Placeholder = styled.div<Placeholder>`
   background: rgba(1, 1, 1, 0.5);
 `;
 
-export const Fighters = styled.div`
+export const Fighters = styled(motion.div)`
   width: 100%;
   height: 8rem !important;
   padding: 0 4rem;

@@ -14,7 +14,7 @@ import {
   FighterCard,
 } from "./styles";
 import theme from "../../styles/theme";
-import { Variants } from "framer-motion";
+import { AnimatePresence, Variants } from "framer-motion";
 
 interface PlayerProps {
   selectedFighter: Fighter | null;
@@ -62,7 +62,7 @@ export function Player({
 
   function getAttributesStats(attribute: [string, number]) {
     const [attributeName, attributeValue] = attribute;
-    
+
     let stats = [];
     for (let i = 1; i <= 10; i++) {
       const isFilled = i <= attributeValue / 10;
@@ -166,30 +166,54 @@ export function Player({
         {fighters.map(({ id, image }) => {
           const isSelected = selectedFighter?.id === id;
 
-          const shadowAnimation: Variants = {
+          const cardAnimation: Variants = {
+            enter: {
+              y: -20,
+              opacity: 0,
+            },
             active: {
+              y: 0,
+              opacity: 1,
               boxShadow: [
                 `0px 0px 12px 4px ${color}`,
                 `0px 0px 12px 8px ${color}`,
               ],
               transition: {
-                duration: 0.2,
-                repeat: Infinity,
-                repeatType: "mirror",
+                boxShadow: {
+                  duration: 0.2,
+                  repeat: Infinity,
+                  repeatType: "mirror",
+                },
               },
             },
             desactive: {
+              y: 0,
+              opacity: 1,
               boxShadow: `0px 0px 0px transparent`,
+            },
+            exit: {
+              opacity: 0,
+              y: 10,
+              transition: {
+                duration: 0.2,
+              },
             },
           };
           return (
-            <FighterCard
-              image={`https://i.postimg.cc/${image}`}
-              variants={shadowAnimation}
-              animate={isSelected ? "active" : "desactive"}
-              isBot={isBot}
-              onClick={() => handleFighterCardClick(id)}
-            />
+            <AnimatePresence mode="wait">
+              <FighterCard
+                key={String(id)}
+                image={`https://i.postimg.cc/${image}`}
+                variants={cardAnimation}
+                initial={"enter"}
+                animate={isSelected ? "active" : "desactive"}
+                whileTap={{ scale: 0.9 }}
+                whileHover={{ scale: 1.1 }}
+                exit={"exit"}
+                isBot={isBot}
+                onClick={() => handleFighterCardClick(id)}
+              />
+            </AnimatePresence>
           );
         })}
       </Fighters>

@@ -30,6 +30,8 @@ export const FighterCard = styled(motion.button)<FighterCard>`
   background-position: 75% top;
   background-image: ${({ image }) => `url(${image})`};
 
+  position: relative;
+
   border: 1px solid
     ${({ isPlayerOne, isPlayerTwo, theme }) =>
       isPlayerOne || isPlayerTwo
@@ -38,17 +40,24 @@ export const FighterCard = styled(motion.button)<FighterCard>`
 
   display: flex;
 
+  overflow: hidden;
+
   transition: all 0.2s;
-
-  pointer-events: ${({ isPlayerOne, isPlayerTwo }) =>
-    isPlayerOne || isPlayerTwo ? "none" : "auto"};
-
-  filter: ${({ isPlayerTwo }) =>
-    isPlayerTwo ? "grayscale(100%)" : "grayscale(0)"};
 
   span {
     color: ${({ theme }) => theme.colors.white};
     font-size: 1.6rem;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${({ isPlayerTwo }) => (isPlayerTwo ? "#000" : "transparent")};
+    mix-blend-mode: saturation;
   }
 
   &:hover {
