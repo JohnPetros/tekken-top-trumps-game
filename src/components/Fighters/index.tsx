@@ -42,8 +42,6 @@ export function Fighters() {
     }
   }
 
-  console.log({ stage });
-
   return (
     <Container>
       {fighters.map(({ id, image }) => {
