@@ -17,7 +17,6 @@
    </a>
     <img alt="Stargazers" src="https://img.shields.io/github/stars/JohnPetros/tekken-top-trumps-game?style=social">
 </div>
-![Alt text](image.png)
 <br>
 
 ## 🖥️ About the App
