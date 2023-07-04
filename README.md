@@ -41,7 +41,7 @@ The App has two players: player One (user) and Player Two (bot) and follows the 
 ### ⏹️ Demonstration
 
 <div align="center">
-  <img src=".github/preview.png" width="500" alt="Preview of the running application" />
+  <img src=".github/preview.png" width="1500" alt="Preview of the running application" />
 </div>
 
 ---
