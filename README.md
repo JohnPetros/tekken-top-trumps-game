@@ -23,7 +23,7 @@
 
 This app is a **Top trumps card game** with characters of [Tekken](https://tekken.com/), which is a series of fighting video and arcade developed and published by [Bandai Namco](https://www.bandainamcoent.com/pt_br).
 
-The motivation to create this project was to practice the basics of [framer motion](https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwi8kq_NvPX_AhUZPNQBHW1CAhMYABAAGgJvYQ&ohost=www.google.com.br&cid=CAESauD29kiBZlDrh2pma-do0uvwX-TjBPAEJJ7T0ZLERyOjV_TzI4gsPooPJJTQyzKc_yV_YLDGcRg5xsbpHEP0YKDv-WuDiBHEjw7b9JznuLCiiz9iWf8p7gCk931OaICxOBvVWJS_nBfcx-s&sig=AOD64_3uRzDpZDmyOFObGu04ImKutXSl5A&q&adurl&ved=2ahUKEwic6aPNvPX_AhXosJUCHUjYD6AQ0Qx6BAgGEAE), which is a powerful and simple React animation library.
+The motivation for creating this project was to practice the basics of [framer motion](https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwi8kq_NvPX_AhUZPNQBHW1CAhMYABAAGgJvYQ&ohost=www.google.com.br&cid=CAESauD29kiBZlDrh2pma-do0uvwX-TjBPAEJJ7T0ZLERyOjV_TzI4gsPooPJJTQyzKc_yV_YLDGcRg5xsbpHEP0YKDv-WuDiBHEjw7b9JznuLCiiz9iWf8p7gCk931OaICxOBvVWJS_nBfcx-s&sig=AOD64_3uRzDpZDmyOFObGu04ImKutXSl5A&q&adurl&ved=2ahUKEwic6aPNvPX_AhXosJUCHUjYD6AQ0Qx6BAgGEAE), which is a powerful and simple React animation library.
 
 ## 🕹️ About the Game
 
